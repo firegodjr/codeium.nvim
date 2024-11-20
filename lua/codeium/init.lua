@@ -22,6 +22,7 @@ function M.setup(options)
 			Server.authenticate()
 		end
 		if args[1] == "Chat" then
+			s.refresh_context()
 			s.get_chat_ports()
 			s.add_workspace()
 		end
@@ -37,7 +38,11 @@ function M.setup(options)
 	})
 
 	local source = Source:new(s)
-	require("cmp").register_source("codeium", source)
+	if require("codeium.config").options.enable_cmp_source then
+		require("cmp").register_source("codeium", source)
+	end
+
+	require("codeium.virtual_text").setup(s)
 end
 
 return M
